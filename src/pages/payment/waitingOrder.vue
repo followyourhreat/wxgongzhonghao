@@ -23,7 +23,7 @@
             class="count-input"
             v-model="orderPrice"
             placeholder="请输入金额"
-            @blur="changeOrderPrice"
+           
             disabled
           >
         </div>
@@ -33,7 +33,7 @@
           <img src="../../assets/images/counpon.png" alt>
           <span>消费券</span>
         </div>
-        <input type="text" placeholder="可使用￥25" disabled v-model="csmCounpon" @blur="changeCsmCounpon" @input="handleInput">
+        <input type="text" placeholder="可使用￥25" disabled v-model="csmCounpon" >
       </div>
       <!-- <van-button type="primary" @click="testPay">支付宝测试</van-button> -->
     </div>
@@ -54,7 +54,7 @@ export default {
     return {
       uid: "",
       title: "提交订单",
-      csmCounpon: 0, //消费券
+      csmCounpon: "", //消费券
       checked: false,
       orderPrice: "", //订单金额
       openId: "", //openid
@@ -74,6 +74,10 @@ export default {
       },
       userOrderInfo:[],
       order_no:"",//待支付订单号
+      domain:"",
+      picUrlRelative:"",
+      appId:"",
+      picUrl:"",
     };
   },
   components: {
@@ -85,6 +89,9 @@ export default {
     if(cUrl.search !== undefined || cUrl.search.indexOf("code") >0){
         window.location.href = targetUrl;
     }
+  },
+  created(){
+    this.commonSystemInfo();
   },
   mounted() {
     console.log("查看本地的openid");
@@ -117,34 +124,34 @@ export default {
       }
     },
     //更改订单金额
-    changeOrderPrice() {
+    // changeOrderPrice() {
    
-      if(this.orderPrice == ""){
-          console.log("12312");
-          this.orderTotal = 0;
-      }else{
-        this.orderTotal = 100 * (Number(this.orderPrice).toFixed(2) - this.csmCounpon);
-        console.log(this.orderTotal);
-      }
+    //   if(this.orderPrice == ""){
+    //       console.log("12312");
+    //       this.orderTotal = 0;
+    //   }else{
+    //     this.orderTotal = 100 * (Number(this.orderPrice).toFixed(2) - this.csmCounpon);
+    //     console.log(this.orderTotal);
+    //   }
       
-    },
-    //监听输入的订单金额
-    handleInput(){
-      console.log("123");
-      if(this.orderPrice == ""){
-          console.log("12312");
-          this.orderTotal = 0;
-      }else{
-        this.orderTotal = 100 * (Number(this.orderPrice).toFixed(2) - this.csmCounpon);
+    // },
+    // //监听输入的订单金额
+    // handleInput(){
+    //   console.log("123");
+    //   if(this.orderPrice == ""){
+    //       console.log("12312");
+    //       this.orderTotal = 0;
+    //   }else{
+    //     this.orderTotal = 100 * (Number(this.orderPrice).toFixed(2) - this.csmCounpon);
         
-      }
-    },
-    //更改消费券金额
-    changeCsmCounpon() {
-      console.log("66666");
-      this.orderTotal = 100 * (Number(this.orderPrice).toFixed(2) - this.csmCounpon);
-      console.log(this.orderTotal);
-    },
+    //   }
+    // },
+    // //更改消费券金额
+    // changeCsmCounpon() {
+    //   console.log("66666");
+    //   this.orderTotal = 100 * (Number(this.orderPrice).toFixed(2) - this.csmCounpon);
+    //   console.log(this.orderTotal);
+    // },
     handleSubmit() {
       //判断是否登录
       if (this.isLogin) {
@@ -343,14 +350,15 @@ export default {
             if(res.code == "121"){
               this.autoLogin();
             }else{
+              // alert("消费券："+res.data.userOrderInfo[0].consumer_money);
               this.userOrderInfo = res.data.userOrderInfo;
               this.orderPrice = res.data.userOrderInfo[0].order_money;
-              this.csmCounpon = res.data.userOrderInfo[0].coupon_money;
-              this.shopPic = "http://www.lizsh.net/newLzshApi/"+res.data.userOrderInfo[0].shop_cover;
+              this.csmCounpon = res.data.userOrderInfo[0].consumer_money;
+              this.shopPic =this.picUrl +res.data.userOrderInfo[0].shop_cover;
               this.shopName = res.data.userOrderInfo[0].shop_name;
               this.order_no = res.data.userOrderInfo[0].order_no;
               this.shopId = res.data.userOrderInfo[0].shop_id;
-              this.changeOrderPrice(); 
+              // this.changeOrderPrice(); 
             }
         
           

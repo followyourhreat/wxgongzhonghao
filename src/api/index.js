@@ -9,7 +9,7 @@ import md5 from 'js-md5'
 // 模拟后台接口数据,若不需要,请注释
 // import './mock.js'
 // 基础URL
-const baseUrl = process.env.NODE_ENV == "production" ? "http://www.lizsh.net" : "http://www.lizsh.net";
+const baseUrl = process.env.NODE_ENV == "prd" ? "http://www.lizsh.net" : "https://www.lizhongshenghuo.com";
 var http = axios.create({
   baseURL: baseUrl,
   headers: {

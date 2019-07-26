@@ -12,7 +12,13 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const env = require('../config/prod.env')
-
+// if(process.env.NODE_ENV === 'stg') {
+//   var env = require('../config/stg.env')
+//   console.log("stg")
+// }else{
+//   var env = require('../config/prod.env')
+//   console.log("prod")
+// }
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({

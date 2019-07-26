@@ -24,6 +24,7 @@
             v-model="orderPrice"
             placeholder="请输入金额"
             @blur="changeOrderPrice"
+            @input="enterOrderPrice"
           >
         </div>
       </div>
@@ -198,11 +199,8 @@ export default {
         });
     },
     //更改订单金额
-    changeOrderPrice() {
-      if (this.orderPrice == "") {
-        console.log("12312");
-        this.orderTotal = 0;
-      } else {
+    enterOrderPrice() {
+   
         if( 100 * (Number(this.orderPrice).toFixed(2) - Number(this.csmCounpon).toFixed(2))<0){
           this.orderTotal = 0;
         }else{
@@ -211,14 +209,21 @@ export default {
         }
         
         console.log(this.orderTotal);
-      }
+      
     },
-    //监听输入的订单金额
+    //监听订单金额
+    changeOrderPrice(){
+     if(this.orderPrice == ""){
+       this.$toast("订单金额不能为空");
+     }
+    },
+    //监听输入的消费券
     handleInput() {
       console.log("123");
       if (this.orderPrice == "") {
         console.log("12312");
-        this.orderTotal = 0;
+        this.$toast("订单金额不能为空");
+        // this.orderTotal = 0;
       } else {
         if( 100 * (Number(this.orderPrice).toFixed(2) - Number(this.csmCounpon).toFixed(2))<0){
           this.orderTotal = 0;
@@ -226,36 +231,17 @@ export default {
           this.orderTotal =
           100 * (Number(this.orderPrice).toFixed(2) - Number(this.csmCounpon).toFixed(2));
         }
+       
       }
     },
     //更改消费券金额
     changeCsmCounpon() {
-      console.log("66666");
-      if( 100 * (Number(this.orderPrice).toFixed(2) - Number(this.csmCounpon).toFixed(2))<0){
-          this.orderTotal = 0;
-        }else{
-          this.orderTotal =
-          100 * (Number(this.orderPrice).toFixed(2) - Number(this.csmCounpon).toFixed(2));
-        }
-    
         if(this.couponMoney < this.csmCounpon){
           this.csmCounpon = this.couponMoney;
           this.$toast("消费券余额不足");  
           return;
         }
-        // if(this.csmCounpon > this.orderPrice){
-        //   alert("消费券："+this.csmCounpon);
-        //   alert("订单金额："+this.orderPrice);
-        //   this.csmCounpon = this.orderPrice;
-        //   return;
-        // }
-      
-      
-      // if(this.csmCounpon > this.orderPrice){
-      //   alert("消费券："+this.csmCounpon);
-      //   alert("订单金额："+this.orderPrice);
-      //   this.csmCounpon = this.orderPrice;
-      // }
+     
        
       console.log(this.orderTotal);
     },
@@ -281,11 +267,18 @@ export default {
         if(this.csmCounpon == ""){
             this.csmCounpon = 0;
         }
-        
+        if(Number(this.csmCounpon) > Number(this.orderPrice)){
+          // alert("消费券："+this.csmCounpon);
+          // alert("订单金额："+this.orderPrice);
+          this.csmCounpon = this.orderPrice;
+          return;
+        }
    
         //全是消费券消费的支付
-        if(this.csmCounpon == this.orderPrice ){
-          alert("消费券支付:"+this.csmCounpon);
+        if(Number(this.csmCounpon) >= Number(this.orderPrice) ){
+          
+     
+          // alert("消费券支付:"+this.csmCounpon);
            var ua = navigator.userAgent.toLowerCase();
             var result = /micromessenger/.test(ua) ? true : false;
             let dtSrc="";
@@ -389,14 +382,12 @@ export default {
                 }
               })
         }else{
+          // alert("正常支付："+this.csmCounpon);
           var ua = navigator.userAgent.toLowerCase();
           var result = /micromessenger/.test(ua) ? true : false;
           
           if (result) {
             console.log("你正在访问微信浏览器");
-            if(this.csmCounpon == ""){
-              this.csmCounpon = 0;
-            }
             let params = {
               uid: this.uid + "",
               // uid:  "148",
@@ -437,9 +428,7 @@ export default {
           } else {
             console.log("你访问的不是微信浏览器");
             console.log(this);
-            if(this.csmCounpon == ""){
-              this.csmCounpon = 0;
-            }
+          
             let params = {
               uid: this.uid + "",
               shopId: this.shopId + "",

@@ -1,6 +1,14 @@
 <template>
   <div class="payment-body">
-   <memnavbar :pageTitle="title"></memnavbar>
+   <!-- <memnavbar :pageTitle="title"></memnavbar> -->
+   <van-nav-bar
+      :title="title"
+      left-text
+      right-text
+      left-arrow
+      @click-left="onClickLeft"
+     
+    />
    <div class="order-detail-body">
        
         <div class="order-new-container">
@@ -111,6 +119,7 @@ export default {
           shop_name:"",//店铺名称
           data_src:"",//1就是微信 2就是支付宝
           created_time:"",//支付时间
+          bill_no:"",//订单号
         },
     };
   },
@@ -154,8 +163,7 @@ export default {
           // alert("code 121");
           // this.autoLogin();
         }else{
-            // alert("step4");
-            // alert("消费券奖励"+res.data.consumerCoupon);
+          
           this.consumerScoreReward = res.data.consumerScoreReward;
           if( res.data.consumerCouponReward == "" || res.data.consumerCouponReward == null){
               this.consumerCouponReward = 0;
@@ -185,20 +193,26 @@ export default {
       })
     },
     getProfit(){
+      this.token = sessionStorage.getItem("redisTokenKey");
+      // alert("bill_no"+this.userOrderInfo.bill_no);
       this.isActive = true;
       let params = {
         uid:this.uid,
-        billNo:this.orderNo
+        billNo:this.userOrderInfo.bill_no
       }
-      this.$http.post("/newLzshApi/coupon/receiveCoupon","data=" + JSON.stringify(params)).then(res=>{
+      this.$http.post("/newLzshApi/coupon/receiveCoupon","data=" + JSON.stringify(params),
+      {
+        headers: {
+          token: this.token
+        }  
+      }).then(res=>{
         setTimeout(()=>{
+          // alert("领取成功");
           this.redPacketshow =  false;
           this.redPacket = true;
         },2000)
       })
-      
 
-     
     },
     closePat(){
       this.redPacketshow =  false;
@@ -211,6 +225,9 @@ export default {
     },
     finishedPay(){
       sessionStorage.setItem("recommendCode", "");//使用完recommendCode 就删除
+      this.$router.push({path:"/home"});
+    },
+    onClickLeft(){
       this.$router.push({path:"/home"});
     },
     //自动登录
@@ -545,4 +562,5 @@ body {
   width:0.76rem;
   height: 0.76rem;
 }
+
 </style>

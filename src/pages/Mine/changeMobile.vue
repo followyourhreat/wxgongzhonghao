@@ -17,12 +17,13 @@
     </div>
 </template>
 <script>
+import md5 from 'js-md5'
 import memnavbar from "../../components/memnavbar";
 export default {
     data(){
         return{
             title:"绑定手机号",
-            countTime:240,
+            countTime:60,
             mobileCp:"",
             sms:"",
             password:"",
@@ -71,7 +72,7 @@ export default {
             this.msgId = res.data.msgId;
             this.showVerifyCode = false;
             this.timeShow = true;
-            this.countTime =240;
+            this.countTime = 60;
             this.startCountTime();
         })
         },
@@ -103,7 +104,7 @@ export default {
             "mobile": this.mobileCp + "",
             "msgId":this.msgId+"",
             "validCode":this.sms+"",
-            "password":this.password
+            "password":md5(this.password)
             }
             this.$http.post("/newLzshApi/userInfo/bindMobile","data=" + JSON.stringify(params),{
                 headers: {

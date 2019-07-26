@@ -256,7 +256,7 @@ export default {
           'token':this.token
         },
       }).then(res=>{
-        this.totalCounpon = res.data.totalCoupon;
+        this.totalPay = res.data.totalCoupon;
         this.CouponRecordList = res.data.resultList;
         if(res.data.resultList.length == 0){
           this.nodata = true;

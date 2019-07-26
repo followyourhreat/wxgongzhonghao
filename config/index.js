@@ -44,7 +44,8 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, 'D:/share/testwar/lzshNewUserWeb'),
     assetsSubDirectory: 'statics',
     // assetsPublicPath: process.env.NODE_ENV == "production" ? "http://cdn.lizhongshenghuo.com" : "http://cdn.lizsh.net/newLzshApi/",
-    assetsPublicPath: process.env.NODE_ENV == "production" ? "http://cdn.lizsh.net/newLzshApi/" : "http://cdn.lizhongshenghuo.com",
+    assetsPublicPath: process.env.NODE_ENV == "prd" ? "http://cdn.lizsh.net/newLzshApi/" : "https://cdn.lizhongshenghuo.com/newLzshApi/",
+    // assetsPublicPath: "http://cdn.lizsh.net/newLzshApi/",
     
     /**
      * Source Maps
@@ -67,4 +68,5 @@ module.exports = {
     // Set to `true` or `false` to always turn it on or off
     bundleAnalyzerReport: process.env.npm_config_report
   }
+ 
 }

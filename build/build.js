@@ -11,6 +11,9 @@ const webpack = require('webpack')
 const config = require('../config')
 const webpackConfig = require('./webpack.prod.conf')
 
+console.log(process.argv.splice(2),"-----------打印出第二个参数 ----------");
+console.log(process.env.NODE_ENV+"环境");
+
 const spinner = ora('building for production...')
 spinner.start()
 

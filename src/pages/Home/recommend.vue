@@ -69,16 +69,21 @@ export default {
         if(res.code == "121"){
           this.autoLogin();
         }else{
-          if(location.href.indexOf("recommendCode")>0){
-            let recUrl = res.data.recomandUrl.split("?")[1]; 
-            this.qrcodeUrl = "http://www.lizsh.net/newLzshApi/index.html/#/home?"+recUrl;
-            sessionStorage.setItem("recommendCode","");
-            let recode = res.data.recomandUrl.split("?")[1].split("=")[1];
-            sessionStorage.setItem("recommendCode",recode);
-          }else{
-            let recUrl = res.data.recomandUrl.split("?")[1]; 
-            this.qrcodeUrl = "http://www.lizsh.net/newLzshApi/index.html/#/home?"+recUrl;
-          }
+          // if(location.href.indexOf("recommendCode")>0){
+          //   let recUrl = res.data.recomandUrl.split("?")[1]; 
+          //   this.qrcodeUrl = "http://www.lizsh.net/newLzshApi/index.html/#/home?"+recUrl;
+          //   this.qrcodeUrl =  res.data.recomandUrl;
+          //   sessionStorage.setItem("recommendCode","");
+          //   let recode = res.data.recomandUrl.split("?")[1].split("=")[1];
+          //   sessionStorage.setItem("recommendCode",recode);
+          // }else{
+          //   let recUrl = res.data.recomandUrl.split("?")[1]; 
+          //   this.qrcodeUrl = "http://www.lizsh.net/newLzshApi/index.html/#/home?"+recUrl;
+          // }
+          this.qrcodeUrl =  res.data.recomandUrl;
+          sessionStorage.setItem("recommendCode","");
+          let recode = res.data.recomandUrl.split("?")[1].split("=")[1];
+          sessionStorage.setItem("recommendCode",recode);
           
 
         }
